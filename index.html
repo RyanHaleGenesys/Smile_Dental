@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Smile Dental | Greenwood, IN</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #eaf5f4;
+    --surface: #ffffff;
+    --ink: #0f3a42;
+    --muted: #4d6c72;
+    --accent: #f4c430;
+    --accent-ink: #0f3a42;
+    --line: #c5ddda;
+    --open: #1c7c54;
+    --closed: #a63d2f;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0c2227;
+      --surface: #12313a;
+      --ink: #e6f3f1;
+      --muted: #9ebfc0;
+      --line: #25505a;
+      --open: #5fd4a0;
+      --closed: #ff9a8b;
+    }
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    font-family: "Figtree", system-ui, sans-serif;
+    font-size: 18px;
+    line-height: 1.6;
+    color: var(--ink);
+    background: var(--bg);
+  }
+  a { color: inherit; }
+  :focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+
+  .wrap { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+
+  header.top { padding: 20px 0; }
+  header.top .wrap { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+  .brand { font-family: "Bricolage Grotesque", sans-serif; font-weight: 800; font-size: 22px; text-decoration: none; }
+  nav a { margin-left: 20px; text-decoration: none; font-weight: 500; color: var(--muted); }
+  nav a:hover { color: var(--ink); }
+
+  .hero { padding: 56px 0 64px; }
+  h1 {
+    font-family: "Bricolage Grotesque", sans-serif;
+    font-weight: 800;
+    font-size: clamp(40px, 7vw, 72px);
+    line-height: 1.02;
+    letter-spacing: -0.02em;
+    margin: 0 0 20px;
+    max-width: 14ch;
+  }
+  .lead { max-width: 52ch; color: var(--muted); margin: 0 0 32px; }
+
+  .actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+  button.chat, a.phone {
+    font: inherit; font-weight: 600; cursor: pointer;
+    padding: 14px 24px; border-radius: 999px; text-decoration: none;
+  }
+  button.chat { background: var(--accent); color: var(--accent-ink); border: 0; }
+  button.chat:hover { filter: brightness(0.95); }
+  a.phone { border: 2px solid var(--ink); }
+
+  .status {
+    display: inline-flex; align-items: center; gap: 8px;
+    margin-top: 28px; font-weight: 600;
+  }
+  .dot { width: 12px; height: 12px; border-radius: 50%; background: var(--muted); }
+  .status.open .dot { background: var(--open); }
+  .status.open { color: var(--open); }
+  .status.closed .dot { background: var(--closed); }
+  .status.closed { color: var(--closed); }
+
+  section { padding: 48px 0; border-top: 1px solid var(--line); }
+  h2 { font-family: "Bricolage Grotesque", sans-serif; font-size: 32px; margin: 0 0 20px; letter-spacing: -0.01em; }
+  .cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 40px; }
+
+  table { border-collapse: collapse; width: 100%; max-width: 380px; }
+  td { padding: 8px 0; border-bottom: 1px solid var(--line); }
+  td:last-child { text-align: right; color: var(--muted); }
+  tr.today td { font-weight: 600; color: var(--ink); }
+
+  ul.plain { list-style: none; padding: 0; margin: 0; }
+  ul.plain li { padding: 8px 0; border-bottom: 1px solid var(--line); }
+  .note { color: var(--muted); font-size: 16px; margin-top: 16px; max-width: 46ch; }
+
+  footer { padding: 32px 0 48px; color: var(--muted); font-size: 15px; border-top: 1px solid var(--line); }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#">Smile Dental</a>
+    <nav>
+      <a href="#hours">Hours</a>
+      <a href="#insurance">Insurance</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="wrap hero">
+    <h1>Dental care that fits your week.</h1>
+    <p class="lead">Cleanings, fillings, and checkups for the whole family. Ask a question or book a visit in the chat. It takes about a minute.</p>
+    <div class="actions">
+      <button class="chat" id="openChat" type="button">Chat with us</button>
+      <a class="phone" href="tel:+13175550142">Call (317) 555-0142</a>
+    </div>
+    <div class="status" id="status" role="status"><span class="dot"></span><span id="statusText">Checking hours…</span></div>
+  </div>
+
+  <section id="hours">
+    <div class="wrap cols">
+      <div>
+        <h2>Office hours</h2>
+        <table id="hoursTable">
+          <tr data-day="1"><td>Monday</td><td>8:00 am – 5:00 pm</td></tr>
+          <tr data-day="2"><td>Tuesday</td><td>8:00 am – 5:00 pm</td></tr>
+          <tr data-day="3"><td>Wednesday</td><td>8:00 am – 5:00 pm</td></tr>
+          <tr data-day="4"><td>Thursday</td><td>8:00 am – 5:00 pm</td></tr>
+          <tr data-day="5"><td>Friday</td><td>8:00 am – 3:00 pm</td></tr>
+          <tr data-day="6"><td>Saturday</td><td>9:00 am – 1:00 pm</td></tr>
+          <tr data-day="0"><td>Sunday</td><td>Closed</td></tr>
+        </table>
+      </div>
+      <div id="insurance">
+        <h2>Insurance we accept</h2>
+        <ul class="plain">
+          <li>Delta Dental</li>
+          <li>Cigna</li>
+          <li>MetLife</li>
+          <li>Aetna</li>
+        </ul>
+        <p class="note">Not sure what your plan covers? Start a chat and our team will check for you.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="wrap">
+      <h2>Find us</h2>
+      <p>123 Main Street, Greenwood, IN 46142<br>
+      <a href="tel:+13175550142">(317) 555-0142</a></p>
+      <p class="note">Need to reschedule? Open the chat and choose "Book or change an appointment."</p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">Smile Dental. Sample site for a Genesys Web Messaging demo.</div>
+</footer>
+
+<!-- ============================================================
+     GENESYS WEB MESSAGING SNIPPET
+     1. In Genesys Cloud: Admin > Message > Messenger Deployments
+     2. Create or open a deployment, copy its Deployment ID
+     3. Paste the ID below, replacing YOUR_DEPLOYMENT_ID
+     4. Set "environment" to match your Genesys Cloud region:
+          prod       = US East (mypurecloud.com)
+          prod-usw2  = US West
+          prod-use2  = US East 2
+          prod-cac1  = Canada
+          prod-euw1  = Ireland
+          prod-apse2 = Sydney
+     5. In the deployment, add this site's domain under "Allowed domains"
+        (use http://localhost:8000 for local testing)
+     ============================================================ -->
+<script>
+  (function (g, e, n, es, ys) {
+    g['_genesysJs'] = e;
+    g[e] = g[e] || function () {
+      (g[e].q = g[e].q || []).push(arguments);
+    };
+    g[e].t = 1 * new Date();
+    g[e].c = es;
+    ys = document.createElement('script');
+    ys.async = 1;
+    ys.src = n;
+    ys.charset = 'utf-8';
+    document.head.appendChild(ys);
+  })(window, 'Genesys', 'https://apps.mypurecloud.com/genesys-bootstrap/genesys.min.js', {
+    environment: 'prod',
+    deploymentId: 'YOUR_DEPLOYMENT_ID'
+  });
+</script>
+
+<script>
+  // "Chat with us" button opens the Genesys messenger window
+  document.getElementById('openChat').addEventListener('click', function () {
+    if (typeof Genesys === 'function') {
+      Genesys('command', 'Messenger.open', {}, function () {}, function () {
+        alert('Chat is not available right now. Please call (317) 555-0142.');
+      });
+    }
+  });
+
+  // Open/closed indicator (same hours the bot's Schedule should use)
+  var hours = {
+    0: null,
+    1: [8, 17], 2: [8, 17], 3: [8, 17], 4: [8, 17],
+    5: [8, 15],
+    6: [9, 13]
+  };
+  var now = new Date();
+  var today = now.getDay();
+  var h = now.getHours() + now.getMinutes() / 60;
+  var slot = hours[today];
+  var isOpen = slot && h >= slot[0] && h < slot[1];
+
+  var status = document.getElementById('status');
+  status.classList.add(isOpen ? 'open' : 'closed');
+  document.getElementById('statusText').textContent = isOpen
+    ? 'Open now. Chat goes straight to our front desk.'
+    : 'Closed right now. Leave a message in the chat and we will call you back.';
+
+  var row = document.querySelector('tr[data-day="' + today + '"]');
+  if (row) row.classList.add('today');
+</script>
+
+</body>
+</html>
